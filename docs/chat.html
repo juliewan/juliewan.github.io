@@ -300,6 +300,17 @@ function renderStream(raw, { cursor } = { cursor: false }) {
   outputEl.innerHTML = html + (cursor ? '<span class="cursor" aria-hidden="true">▌</span>' : "");
 }
 
+
+function getChatSessionId() {
+  const key = "julie_chat_session_id";
+  let value = localStorage.getItem(key);
+  if (!value) {
+    value = crypto.randomUUID();
+    localStorage.setItem(key, value);
+  }
+  return value;
+}
+
 let isSending = false;
 
 async function send() {
@@ -320,7 +331,7 @@ async function send() {
     const res = await fetch("https://julie-in-the-loop.vercel.app/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, session_id: getChatSessionId() }),
     });
 
     const contentType = res.headers.get("Content-Type") || "";
