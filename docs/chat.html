@@ -216,11 +216,10 @@
 </div>
 
 <div class="chat-container" id="chat">
-  <div class="prompt">Ask about exp, qualifications 💅:</div>
+  <div class="prompt">Go ahead, ask away 💅:</div>
   <div class="suggestions">
-    <button class="suggestion-btn" onclick="prefill(this)">what're julie's current projects?</button>
-    <button class="suggestion-btn" onclick="prefill(this)">any hands-on LLM work?</button>
-    <button class="suggestion-btn" onclick="prefill(this)">what does she nerd out on?</button>
+    <button class="suggestion-btn" onclick="prefill(this)">what does julie nerd out on?</button>
+    <button class="suggestion-btn" onclick="prefill(this)">what are her passion projects?</button>
   </div>
   <div class="input-row">
     <div class="input-col">
@@ -311,6 +310,17 @@ function getChatSessionId() {
   return value;
 }
 
+const CHAT_HISTORY_LIMIT = 6;
+let chatHistory = [];
+
+function rememberTurn(userMessage, assistantReply) {
+  chatHistory.push(
+    { role: "user", content: userMessage },
+    { role: "assistant", content: assistantReply },
+  );
+  chatHistory = chatHistory.slice(-CHAT_HISTORY_LIMIT);
+}
+
 let isSending = false;
 
 async function send() {
@@ -331,7 +341,11 @@ async function send() {
     const res = await fetch("https://julie-in-the-loop.vercel.app/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, session_id: getChatSessionId() }),
+      body: JSON.stringify({
+        message,
+        session_id: getChatSessionId(),
+        history: chatHistory,
+      }),
     });
 
     const contentType = res.headers.get("Content-Type") || "";
@@ -345,6 +359,7 @@ async function send() {
         outputEl.textContent = "Whoa, popular question! You've hit the hourly limit — give it a bit, or email julieintheloop@gmail.com to reach Julie directly. 🙂";
       } else if (data.reply) {
         renderStream(String(data.reply).replace(/\\\$/g, "$"));
+        rememberTurn(message, String(data.reply));
       } else {
         outputEl.textContent = data.error ? `Hmm: ${data.error}` : "Something went sideways. Try again in a moment?";
       }
@@ -390,6 +405,7 @@ async function send() {
 
     renderStream(fullText.replace(/\\\$/g, "$"));   // final paint, cursor removed
     if (!fullText) outputEl.textContent = "No reply came back — try rephrasing?";
+    else rememberTurn(message, fullText);
 
   } catch (err) {
     console.error("Fetch error:", err);

@@ -8,6 +8,11 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/marie-favicon.png">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
+  body {
+    background-color: #fff0f0;
+    color: #544b45;
+  }
+
   .nf {
     min-height: 100vh;
     box-sizing: border-box;
@@ -23,8 +28,8 @@
   .nf pre {
     margin: 0;
     font-family: var(--mono);
-    color: var(--accent);
-    font-size: clamp(8px, 3.4vw, 22px);
+    color: #544b45;
+    font-size: clamp(8px, 3.2vw, 22px);
     line-height: 1.1;
     white-space: pre;
   }
@@ -32,7 +37,7 @@
   .nf p {
     margin: 0;
     font-size: 15px;
-    color: var(--body);
+    color: #544b45;
   }
 
   .nf-links {
@@ -44,7 +49,7 @@
   }
 
   .nf-links a {
-    color: var(--ink);
+    color: #544b45;
     text-decoration: none;
   }
 
@@ -55,16 +60,14 @@
 </head>
 <body>
   <main class="nf">
-    <pre aria-hidden="true"> _  _    ___  _  _
-| || |  / _ \| || |
-| || |_| | | | || |_
-|__   _| |_| |__   _|
-   |_|  \___/   |_|  </pre>
-    <p>This page isn&rsquo;t in the loop.</p>
+    <pre aria-label="404">▄▄▄  ▄▄▄   ▄▄▄▄   ▄▄▄  ▄▄▄ 
+███  ███ ▄██████▄ ███  ███ 
+███▄▄███ ███  ███ ███▄▄███ 
+ ▀▀▀████ ███▄▄███  ▀▀▀████ 
+    ████  ▀████▀      ████</pre>
+    <p>not-in-the-loop.</p>
     <div class="nf-links">
-      <a href="/">&larr; home</a>
-      <a href="/blog.html">blog</a>
-      <a href="/chat.html">ask chat</a>
+      <a href="/">&larr; back</a>
     </div>
   </main>
 </body>

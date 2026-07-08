@@ -42,8 +42,8 @@
        own — letters shear apart. round() keeps it responsive but always
        lands on a whole pixel. (first declaration = fallback for browsers
        without css round()) */
-    font-size: clamp(6px, 1.9vw, 13px);
-    font-size: round(clamp(6px, 1.9vw, 13px), 1px);
+    font-size: clamp(9px, 1.9vw, 13px);
+    font-size: round(clamp(9px, 1.9vw, 13px), 1px);
     /* rows must tile edge-to-edge: the block glyphs fill the em box, so any
        leading (1.05) opens a hairline seam across every letter */
     line-height: 1;
@@ -63,12 +63,8 @@
 
   .wordmark .wv {
     /* one full cycle = time for the hop to cross the width + a rest gap */
-    animation: wordmark-hop 5.2s linear infinite;
+    animation: wordmark-hop 5.2s linear 3;
     animation-delay: var(--d, 0s);
-    /* composite the hop: the glyph is rasterized once and moved as a layer,
-       instead of re-snapping to the pixel grid on every frame (which makes
-       cells in the same column land on different pixels mid-hop) */
-    will-change: transform;
   }
 
   /* hop: crouch (anticipation) → launch → a couple of decaying bounces →
@@ -216,9 +212,9 @@
 
   <div class="landing-chips">
     <span class="chip-label">or ask chat,</span>
+    <a class="chip" href="chat.html?q=what%27s%20julie%20building%20now%3F">what's julie building now?</a>
     <a class="chip" href="chat.html?q=what%20has%20she%20shipped%3F">what has she shipped?</a>
-    <a class="chip" href="chat.html?q=how%20to%20detect%20a%20rogue%20agent%3F">how to detect a rogue agent?</a>
-    <a class="chip" href="chat.html?q=what%20is%20she%20%20towards%3F">what is she looking towards?</a>
+    <a class="chip" href="chat.html?q=what%20is%20she%20looking%20toward%3F">what is she looking toward?</a>
   </div>
 </main>
 
