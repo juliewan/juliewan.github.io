@@ -62,8 +62,11 @@
   }
 
   .wordmark .wv {
-    /* one full cycle = time for the hop to cross the width + a rest gap */
-    animation: wordmark-hop 5.2s linear 3;
+    /* one full cycle = time for the hop to cross the width (~2.5s at
+       STEP 0.03) + a long rest before the next sweep */
+    animation: wordmark-hop 5.6s linear infinite;
+    /* Alternate gentler hop: uncomment this and switch STEP to 0.045 below. */
+    /* animation: wordmark-hop 5.2s linear 3; */
     animation-delay: var(--d, 0s);
   }
 
@@ -77,14 +80,14 @@
      vertical offset keeps each column rigid. */
   @keyframes wordmark-hop {
     0%    { transform: translateY(0);       animation-timing-function: ease-in;  }
-    1.8%  { transform: translateY(0.12em);  animation-timing-function: ease-out; } /* anticipation dip */
-    5.3%  { transform: translateY(-1.1em);  animation-timing-function: ease-in;  } /* launch → apex */
-    9%    { transform: translateY(0);       animation-timing-function: ease-out; } /* land */
-    11%   { transform: translateY(-0.34em); animation-timing-function: ease-in;  } /* bounce back up */
-    12.8% { transform: translateY(0);       animation-timing-function: ease-out; } /* land */
-    14%   { transform: translateY(-0.1em);  animation-timing-function: ease-in;  } /* last little hop */
-    15%   { transform: translateY(0); }                                           /* settle */
-    100%  { transform: translateY(0); }                                           /* rest until the wave loops */
+    1.8%  { transform: translateY(0.12em);  animation-timing-function: ease-out; }
+    5.3%  { transform: translateY(-1.1em);  animation-timing-function: ease-in;  }
+    9%    { transform: translateY(0);       animation-timing-function: ease-out; }
+    11%   { transform: translateY(-0.34em); animation-timing-function: ease-in;  }
+    12.8% { transform: translateY(0);       animation-timing-function: ease-out; }
+    14%   { transform: translateY(-0.1em);  animation-timing-function: ease-in;  }
+    15%   { transform: translateY(0); }
+    100%  { transform: translateY(0); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -181,7 +184,7 @@
   <div class="sidebar-nav">
     <div class="sidebar-section">
       <a class="sidebar-title" href="blog.html">blog</a>
-      <p>Short-and-potentially-sweet/incomplete posts as hyperfocus was outsourced to Opus and context holding has annexed my brain.</p>
+      <p>Short-and-potentially-sweet posts as hyperfocus was outsourced to Opus and context holding has annexed my brain.</p>
     </div>
     <div class="sidebar-section">
       <a class="sidebar-title" href="chat.html">ask chat</a>
@@ -229,7 +232,7 @@
   ██                                                                            ██
 ▀▀▀                                                                             ▀    `;
 
-  const STEP = 0.045;                // seconds of delay per column → the hop's travel speed
+  const STEP = 0.045;
   const pre = document.getElementById("wordmark-art");
   const lines = ART.replace(/^\n/, "").split("\n");
 
