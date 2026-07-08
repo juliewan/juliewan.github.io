@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>julie-in-the-loop — High Precision Detections</title>
+<meta name="description" content="High-precision detection engineering and monitoring non-human insider threat — agent behavioral analytics over agent-tool logs.">
+<link rel="canonical" href="https://juliewan.github.io/posts/high-precision-detections.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="High Precision Detections | Non-human Insider Threat">
+<meta property="og:description" content="Conservative thresholding, layered interpretable detections, and agent behavioral analytics for the non-human insider threat.">
+<meta property="og:url" content="https://juliewan.github.io/posts/high-precision-detections.html">
+<meta property="og:image" content="https://juliewan.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/marie-favicon.png">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  article {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 100px 24px 40px;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .post-date {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+
+  article h1,
+  article .topic {
+    color: var(--ink);
+    font-size: 28px;
+    margin: 0 0 24px;
+  }
+
+  article .topic {
+    margin: 8px 0 24px;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  article h2 {
+    color: var(--ink);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 12px;
+  }
+
+  article p {
+    margin: 0 0 16px;
+  }
+
+  .body-card {
+    margin: 0 0 40px;
+  }
+
+  .body-card img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 0 20px;
+    border-radius: 8px;
+  }
+
+  .link-preview {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    margin: 0 0 40px;
+    background-color: var(--card);
+    transition: border-color 0.2s;
+  }
+
+  .link-preview:hover {
+    border-color: var(--accent);
+  }
+
+  .link-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .link-preview-meta {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .link-preview-title {
+    display: block;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .link-preview-domain {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  article ul, article ol {
+    margin: 0 0 16px;
+    padding-left: 22px;
+  }
+
+  article li {
+    margin: 0 0 8px;
+  }
+
+  article ul ul {
+    margin-top: 8px;
+  }
+
+  article a {
+    color: var(--body);
+    text-decoration: underline;
+  }
+
+  article a:hover {
+    color: var(--ink);
+  }
+
+  .post-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .post-footer a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .post-footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1000px) {
+    article { padding-top: 24px; }
+  }
+</style>
+</head>
+<body class="has-sidebar-column">
+
+<div class="topbar">
+  <a class="logo" href="../index.html" aria-label="julie-in-the-loop — home"><pre class="logo-art" aria-hidden="true">
+          ▄▄                                                    ▄▄
+           ██                              █▄ █▄                 ██
+  ▀▀       ██ ▀▀            ▀▀ ▄          ▄██▄██                 ██
+  ██ ██ ██ ██ ██ ▄█▀█▄      ██ ████▄       ██ ████▄ ▄█▀█▄        ██ ▄███▄ ▄███▄ ████▄
+  ██ ██ ██ ██ ██ ██▄█▀ ▀▀▀▀ ██ ██ ██ ▀▀▀▀  ██ ██ ██ ██▄█▀ ▀▀▀▀   ██ ██ ██ ██ ██ ██ ██
+ ▄██▄▀██▀█▄██▄██▄▀█▄▄▄     ▄██▄██ ▀█      ▄██▄██ ██▄▀█▄▄▄       ▄██▄▀███▀▄▀███▀▄████▀
+  ██                                                                            ██
+▀▀▀                                                                             ▀</pre></a>
+</div>
+
+<div class="sidebar">
+  <div class="sidebar-nav">
+    <div class="sidebar-section">
+      <a class="sidebar-title" href="../blog.html" aria-current="page">blog</a>
+      <p>Short-and-potentially-sweet/incomplete posts as hyperfocus was outsourced to Opus and context holding has annexed my brain.</p>
+    </div>
+    <div class="sidebar-section">
+      <a class="sidebar-title" href="../chat.html">ask chat</a>
+      <p>about my professional experience.</p>
+    </div>
+  </div>
+  <div class="sidebar-contact">
+    <div class="icon-row">
+      <a href="https://linkedin.com/in/julie-wan" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="../assets/linkedin-icon.png" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/juliewan" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="../assets/github-icon.png" alt="GitHub">
+      </a>
+    </div>
+    <span class="email">julieintheloop@gmail.com</span>
+  </div>
+</div>
+
+<article>
+  <div class="post-date">2026-07-03</div>
+  <h1>High Precision Detections</h1>
+
+  <div class="body-card">
+
+    <p>Meaning, [nearly] all alerts are true positives. Hyperbole gratis: when the bells sound, the building&rsquo;s already burned down. You achieve this via conservative thresholding: detections are tuned to require overwhelming evidence before firing. Cries of wolf are credible and urgent, but anything lurking amongst the weeds is missed.</p>
+
+    <p>Because the practical reality is that investigative bandwidth can&rsquo;t be drawn down chasing ghosts and squeaky wheels. If you have salespeople on the floor, you&rsquo;d want them moving cars, not entertaining entitled tire kickers.</p>
+
+    <p>If precision dips in pursuit of high-hanging fruit: productivity friction. Once you can&rsquo;t easily discern sheep from wolves, the sheep will nervously overgraze, and the wolves are in a heavenly buffet of cover either way.</p>
+
+    <p>Low recall: as in, each net catches a subset of bad behavior, not all. But the denominator is the total potentially findable true positives--we can&rsquo;t know for certain the exact prevalence across the enterprise. With precision, it&rsquo;s possible to eventually triage which are false and derive the metric.</p>
+
+    <p>So, layer multiple precise detections that are each interpretable. A non-GMO ingredients list&ndash;sans &ldquo;butylated hydroxytoluene.&rdquo;</p>
+  </div>
+
+  <h2 class="topic">Non-human Insider Threat</h2>
+
+  <div class="body-card">
+
+    <p>Service accounts, APIs, and AI agents are the fastest-growing vector, outpacing human activity towards 50x. An autonomous workforce with persisted access, at machine speed and at scale means security only at the moment of exfiltration is dead.</p>
+
+    <p>Coined "agent behavioral analytics": additionally, even predominantly, monitor agent activity apart from human activity.</p>
+
+    <a href="https://github.com/juliewan/agent-behavioral-analytics"><img src="https://github.com/juliewan/agent-behavioral-analytics/blob/main/agent-behavioral-analytics.png?raw=true" alt="Gameboy tileset of robot corporate employees and one malicious insider."></a>
+
+    <p>Insider risk is actor-centric (intent buckets to malicious, negligent, or impersonated) whilst emerging taxonomy for agents is behavior-centric (classifies observed deviations):</p>
+
+    <ul>
+      <li><strong>Manipulated:</strong> input-level (prompt injection, poisoned context/tool output) that produces a one-off bad action without persistence.</li>
+      <li><strong>Subverted:</strong> hijacked, confused deputy</li>
+      <li><strong>Maliciously-configured:</strong> built to act against org interest</li>
+      <li><strong>Malfunctioning:</strong> bugs, flawed training</li>
+    </ul>
+
+    <p><a href="https://github.com/juliewan/agent-behavioral-analytics">My repo demoing a detection ruleset over synthesized agent-tool logs and cards dataset.</a></p>
+
+    <ol>
+      <li><strong>Action Hallucination:</strong> discrepancy btwn agent claim and tool call return, typically a failed/empty upstream. Flag if no tool calls in trace despite mention, or if result was error/timeout/empty.</li>
+      <li>
+        <strong>Loops/Runaway Recursion:</strong> additive trio of token burn, repetitive sequences, 0% error rate (could be, respectively, legit big batch job, polling pattern, things are just peachy)
+        <ul>
+          <li>Pattern hegemony = stuck</li>
+          <li>Delegation cycles</li>
+          <li>Deep session chains</li>
+        </ul>
+      </li>
+      <li><strong>Cost:</strong> 3 std devs above baseline, see above for tightly correlated.</li>
+      <li><strong>Memory:</strong> cross-user/cross-tenant retrieval, keep secrets full stop, deletion anomalies (bursty/old-and-hot/first-ever).</li>
+      <li>
+        <strong>Sequence/Rare Edge:</strong> loops catch repeating edges, sequence catch edges that shouldn't exist.
+        <ul>
+          <li>Rare X-then-Y transitions given P(next tool | current tool)</li>
+          <li>Taint-derived high risk: if current tool ingests untrusted content and the next is privileged.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Goal Drift:</strong> cosine similarity of normalized vectors of goal statement, planner step summaries, and final answer.
+        <ul>
+          <li>Cliff: a single step has nothing to do with the goal.</li>
+          <li>Slow slide: trajectory monotonically declines and cumulatively exceed baseline bound.</li>
+        </ul>
+      </li>
+      <li><strong>Tool Health</strong>: flakiness can be symptom of hijacked endpoint.
+        <ul>
+          <li>Latency: long-tail minority of tools can genuinely be slow-running and sit at high z, anchor to >99th percentile.</li>
+          <li>Failure rate: at small sample sizes, raw percentages lie. 1 failure out of 2 calls is a coin flip. Wilson score gives confidence-interval-style est of 12% lower bound for 1-of-2 failures.</li>
+        </ul>
+      </li>
+      <li><strong>Agent Card Drift</strong> during registration events.
+        <ul>
+          <li>Impersonation: typosquat + shadowing/piggybacking</li>
+          <li>Capability escalation: skill count jump</li>
+          <li>Endpoint hijack + rug-pull: description diverged</li>
+        </ul>
+      </li>
+
+    </ol>
+  </div>
+
+  <a class="link-preview" href="https://github.com/juliewan/agent-behavioral-analytics" target="_blank" rel="noopener">
+    <img src="https://repository-images.githubusercontent.com/1288430703/1e52e9e6-b6fa-4312-abc5-590e5d8ee1cb" alt="agent-behavioral-analytics repo social preview">
+    <div class="link-preview-meta">
+      <span class="link-preview-title">juliewan/agent-behavioral-analytics</span>
+      <span class="link-preview-domain">github.com</span>
+    </div>
+  </a>
+
+  <h2>Refs</h2>
+  <div class="body-card">
+    <ul>
+      <li><a href="https://www.reddit.com/r/cybersecurity/comments/1t3m454/we_are_insider_risk_researchers_focused_on/">We are insider risk researchers focused on&hellip; (r/cybersecurity)</a></li>
+      <li><a href="https://www.reversinglabs.com/blog/ai-agents-new-insider-threat">AI agents: the new insider threat (ReversingLabs)</a></li>
+    </ul>
+  </div>
+
+  <nav class="post-footer">
+    <a href="../blog.html">&larr; all posts</a>
+    <a href="../chat.html?q=tell%20me%20about%20her%20agent%20behavioral%20analytics%20work">ask the chat about this &rarr;</a>
+  </nav>
+
+</article>
+
+</body>
+</html>

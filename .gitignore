@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Python virtualenv
+venv/
+
+# IDE / editor / tooling
+.idea/
+.serena/

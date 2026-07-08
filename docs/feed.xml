@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>julie-in-the-loop</title>
+    <link>https://juliewan.github.io/</link>
+    <description>Short posts on detection engineering and applied AI by Julie Wan.</description>
+    <language>en-us</language>
+    <atom:link href="https://juliewan.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>High Precision Detections | Non-human Insider Threat</title>
+      <link>https://juliewan.github.io/posts/high-precision-detections.html</link>
+      <guid>https://juliewan.github.io/posts/high-precision-detections.html</guid>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Conservative thresholding, layered interpretable detections, and agent behavioral analytics for the non-human insider threat.</description>
+    </item>
+  </channel>
+</rss>
