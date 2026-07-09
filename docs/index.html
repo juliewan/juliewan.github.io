@@ -42,8 +42,11 @@
        own — letters shear apart. round() keeps it responsive but always
        lands on a whole pixel. (first declaration = fallback for browsers
        without css round()) */
-    font-size: clamp(9px, 1.9vw, 13px);
-    font-size: round(clamp(9px, 1.9vw, 13px), 1px);
+    font-size: clamp(5px, 1.9vw, 13px);
+    /* round DOWN, not to-nearest: the art is ~51em wide and 1.9vw × 51 ≈
+       0.97 viewport widths, so rounding up (e.g. 7.5px → 8px) eats the ~3%
+       margin and pushes the art past the viewport edge on some widths */
+    font-size: round(down, clamp(5px, 1.9vw, 13px), 1px);
     /* rows must tile edge-to-edge: the block glyphs fill the em box, so any
        leading (1.05) opens a hairline seam across every letter */
     line-height: 1;
